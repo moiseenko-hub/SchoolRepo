@@ -1,0 +1,18 @@
+@page
+@model WebStoryFroEveryting.Models.SchoolAuth.SchoolAuthViewModel
+
+@{
+    Layout = "_LayoutLessons";
+}
+
+<form method="post" action="/SchoolAuth/Login">
+    <div>
+        @Html.TextBoxFor(x => x.Username, new { placeholder = "UserName" })
+    </div>
+    <div>
+        @Html.TextBoxFor(x => x.Password, new { placeholder = "Password", @type = "password" })
+    </div>
+    <div>
+        <button type="submit">Логин</button>
+    </div>
+</form>

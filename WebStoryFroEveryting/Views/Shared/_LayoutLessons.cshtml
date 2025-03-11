@@ -1,0 +1,30 @@
+@using WebStoryFroEveryting.Services
+@inject SchoolAuthService _authService
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="~/css/Lessons/header.css" rel="stylesheet" />
+  @await RenderSectionAsync("Styles", false)
+</head>
+<body>
+<div class="header">
+    <ul class="header-items">
+        <li>@_authService.GetUserName()</li>
+        <li><a href="/Lessons" class="header-item">Главная</a></li>
+        <li><a href="#" class="header-item">Тесты</a></li>
+        <li><a href="#" class="header-item">Контакты</a></li>
+        <li><a href="/SchoolAuth/Login">Войти</a></li>
+        <li><a href="/SchoolAuth/Registration">Регистрация</a></li>
+        <li><a href="/SchoolAuth/Logout">Выйти</a></li>
+        <li><a href="/SchoolUser/PotentialBannedUsers">Потенциальный бан</a></li>
+        <li><a href="/SchoolUser/Index">Пользователи</a></li>
+        <li><a>Выйти</a></li>
+        <li><a href="/Lessons/Create" class="add-button header-item"><i class="fas fa-plus"></i>+</a></li>
+        <li><a href="/SchoolRoles/">Roles</a></li>
+    </ul>
+</div>
+<div class="content">
+      @RenderBody()
+</div>
+</body>
+</html>

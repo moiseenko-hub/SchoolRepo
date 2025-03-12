@@ -27,19 +27,20 @@
 </div>
 
     
-<div class="comments-section">
-    <form method="post" asp-controller="Lessons" asp-action="CreateComment" asp-route-lessonId="@Model.Id" asp-route-userId="@authService.GetUserId()" class="comment-form">
-        <textarea name="description" placeholder="Ваш комментарий"></textarea>
-        <button type="submit">Создать</button>
+<div class="comments-section" data-lesson-id = "@Model.Id" data-user-id = "@Model.IdCurrentUser">
+    <form method="post" asp-controller="Lessons" asp-action="CreateComment" asp-route-lessonId="@Model.Id" asp-route-userId="@Model.IdCurrentUser"  class="comment-form">
+        <textarea name="description" placeholder="Ваш комментарий" id="description"></textarea>
+        <button type="submit" id="comment-submit">Создать</button>
     </form>
     <div class="comments-list">
         @foreach (var comment in @Model.Comments)
         {
             <div class="comment-item">
-                <div class="comment-description">@comment.User.Username</div>
+                <div class="comment-description">@comment.Username</div>
                 <div class="comment-description">@comment.Description</div>
                 <div class="comment-created">@comment.Created.ToString("g")</div>
             </div>
         }
     </div>
 </div>
+

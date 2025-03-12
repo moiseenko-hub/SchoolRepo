@@ -62,8 +62,4 @@
     <_ContentIncludedByDefault Remove="wwwroot\js\Player\description.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\ApiControllers\" />
-  </ItemGroup>
-
 </Project>

@@ -108,7 +108,7 @@ public class LessonsController: Controller
                 Created = c.Created,
                 Description = c.Description,
                 Id = c.Id,
-                User = new SchoolUserViewModel(){Username = c.User.Username}
+                Username = c.User.Username
             })
             .ToList();
         return new LessonWithCommentViewModel()
@@ -117,7 +117,8 @@ public class LessonsController: Controller
             Preview = lessonData.Preview,
             Source = lessonData.Source,
             Title = lessonData.Title,
-            Comments = commentsViewModel
+            Comments = commentsViewModel,
+            IdCurrentUser = _authService.GetUserId()
         };
     }
     private LessonViewModel MapToViewModel(LessonData lessonData)

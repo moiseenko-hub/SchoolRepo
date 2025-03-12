@@ -7,5 +7,5 @@ public class LessonCommentViewModel
     public int Id { get; set; }
     public string Description { get; set; } = string.Empty;
     public DateTime Created { get; set; }
-    public SchoolUserViewModel User { get; set; }
+    public string Username { get; set; } = string.Empty;
 }

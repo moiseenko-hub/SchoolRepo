@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $("#comment-submit").click(function (event) {
         event.preventDefault()
+
         const commentsSection = $(this).closest(".comments-section")
         const newCommentTag = commentsSection.find("#description")
         const newCommentValue = newCommentTag.val().trim()

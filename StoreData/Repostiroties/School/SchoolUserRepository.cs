@@ -79,7 +79,7 @@ public class SchoolUserRepository : BaseSchoolRepository<SchoolUserData>
     {
         return _dbContext
             .Database
-            .SqlQueryRaw<PotentialBanUsersData>("SELECT * FROM GetPotentialBanUsers()")
+            .SqlQueryRaw<PotentialBanUsersData>("SELECT * FROM GetPotentialBanUsers()") 
             .ToList();
     }
 

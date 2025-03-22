@@ -3,6 +3,8 @@ using StoreData;
 using StoreData.Models;
 using StoreData.Repostiroties;
 using StoreData.Repostiroties.School;
+using WebStoryFroEveryting.Hubs;
+using WebStoryFroEveryting.Middlewares;
 using WebStoryFroEveryting.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,7 @@ builder.Services
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSignalR();
 builder.Services
     .AddDbContext<SchoolDbContext>(
         options => options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SchoolDbContext))));
@@ -26,6 +28,7 @@ builder.Services.AddScoped<LessonRepository>();
 builder.Services.AddScoped<LessonCommentRepository>();
 builder.Services.AddScoped<BanWordRepository>();
 builder.Services.AddScoped<BannedUserRepository>();
+builder.Services.AddScoped<MessageRepository>();
 
 builder.Services.AddScoped<LessonRepository>();
 
@@ -55,6 +58,10 @@ app.UseRouting();
 
 app.UseAuthentication(); // Who you are?
 app.UseAuthorization();  // May I in?
+app.MapHub<ChatHub>("/hub/chat");
+app.MapHub<LessonHub>("/hub/lesson");
+
+app.UseMiddleware<LocalizationMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

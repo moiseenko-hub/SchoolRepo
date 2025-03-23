@@ -16,6 +16,7 @@ public class RolesController : ControllerBase
         _roleRepository = roleRepository;
     }
 
+    [HttpPost]
     public bool UpdateRole([FromForm]ApiRoleViewModel viewModel)
     {
         _roleRepository.UpdatePermission(viewModel.RoleId,viewModel.Permissions);

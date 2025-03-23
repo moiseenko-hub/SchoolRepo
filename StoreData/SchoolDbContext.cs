@@ -14,6 +14,7 @@ public class SchoolDbContext : DbContext
     public DbSet<SchoolRoleData> Roles { get; set; }
     public DbSet<BannedUserData> BannedUsers { get; set; }
     public DbSet<BanWordData> BanWords { get; set; }
+    public DbSet<MessageData> Messages { get; set; }
     public SchoolDbContext(){}
     public SchoolDbContext(DbContextOptions<SchoolDbContext> option) : base(option) { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,6 +30,7 @@ public class SchoolDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SchoolRoleConfiguration());
         modelBuilder.ApplyConfiguration(new BannedUserConfiguration());
         modelBuilder.ApplyConfiguration(new BanWordConfiguration());
+        modelBuilder.ApplyConfiguration(new MessageConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

@@ -1,7 +1,10 @@
+using System.Globalization;
 using Enums.SchoolUser;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using StoreData.Models;
 using StoreData.Repostiroties;
+using WebStoryFroEveryting.Hubs;
 using WebStoryFroEveryting.Models.Lessons;
 using WebStoryFroEveryting.SchoolAttributes.AuthorizeAttributes;
 using WebStoryFroEveryting.Services;
@@ -13,18 +16,22 @@ public class LessonsController: Controller
     private readonly LessonRepository _lessonRepository;
     private readonly LessonCommentRepository _commentRepository;
     private readonly SchoolAuthService _authService;
+    private IHubContext<LessonHub, ILessonHub> _hubContext; 
 
     public LessonsController(
         LessonRepository lessonRepository, 
         LessonCommentRepository lessonCommentRepository,
-        SchoolAuthService authService)
+        SchoolAuthService authService, IHubContext<LessonHub, ILessonHub> hubContext)
     {
         _lessonRepository = lessonRepository;
         _commentRepository = lessonCommentRepository;
         _authService = authService;
+        _hubContext = hubContext;
     }
     public IActionResult Index()
     {
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("ru-RU");
+        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("ru-RU");
         var lessonsData = _lessonRepository.GetAll();
         var lessons = lessonsData
             .Select(MapToViewModel)
@@ -61,6 +68,10 @@ public class LessonsController: Controller
             Source = lessonViewModel.Source,
             Level = lessonViewModel.Level
         });
+        _hubContext
+            .Clients
+            .All
+            .Newlesson(lessonViewModel);
         return RedirectToAction(nameof(Index));
     }
     
@@ -143,4 +154,5 @@ public class LessonsController: Controller
             Title = lessonViewModel.Title,
         };
     }
+    
 }

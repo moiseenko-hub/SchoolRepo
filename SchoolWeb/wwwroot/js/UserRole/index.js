@@ -5,14 +5,14 @@ $(document).ready(function (){
         const roleId = roleSection.attr("user-role-id")
         const permissions = roleSection.find(".permissions:checked").map(function() {
             return $(this).val();
-        }).get();
+        }).get().map(Number);
         console.log(permissions)
         console.log(roleId)
         const newRole = {
             roleId : roleId,
             permissions : permissions
         }
-        $.post("api/Roles/UpdateRole", newRole).then(function (response){
+        $.post("/api/Roles/UpdateRole", newRole).then(function (response){
             console.log(response)
         })
     })

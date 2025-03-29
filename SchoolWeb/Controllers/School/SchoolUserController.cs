@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Enums.SchoolUser;
 using Microsoft.AspNetCore.Mvc;
 using StoreData.Models;
@@ -5,6 +6,10 @@ using StoreData.Repostiroties;
 using WebStoryFroEveryting.Models.Lessons;
 using WebStoryFroEveryting.Models.SchoolUser;
 using WebStoryFroEveryting.SchoolAttributes.AuthorizeAttributes;
+using Microsoft.AspNetCore.Hosting;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using WebStoryFroEveryting.Services;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace WebStoryFroEveryting.Controllers;
 
@@ -12,11 +17,18 @@ public class SchoolUserController : Controller
 {
     private readonly SchoolUserRepository _schoolUserRepository;
     private readonly SchoolRoleRepository _schoolRoleRepository;
+    private readonly IHostingEnvironment _hostingEnvironment;
+    private readonly SchoolAuthService _schoolAuthService;
 
-    public SchoolUserController(SchoolUserRepository schoolUserRepository, SchoolRoleRepository schoolRoleRepository)
+    public SchoolUserController(SchoolUserRepository schoolUserRepository,
+        SchoolRoleRepository schoolRoleRepository,
+        IHostingEnvironment hostingEnvironment,
+        SchoolAuthService schoolAuthService)
     {
         _schoolUserRepository = schoolUserRepository;
         _schoolRoleRepository = schoolRoleRepository;
+        _hostingEnvironment = hostingEnvironment;
+        _schoolAuthService = schoolAuthService;
     }
 
     [HttpGet]
@@ -53,6 +65,31 @@ public class SchoolUserController : Controller
     {
         _schoolUserRepository.BanUser(userId);
         return RedirectToAction(nameof(PotentialBannedUsers));
+    }
+
+    public IActionResult Profile()
+    {
+        var profileViewModel = new ProfileViewModel()
+        {
+            UserId = _schoolAuthService.GetUserId(),
+            Username = _schoolAuthService.GetUserName(),
+        };
+        return View(profileViewModel);
+    }
+
+
+    [HttpPost]
+    public IActionResult UpdateAvatar(IFormFile avatar)
+    {
+        var webRootPath = _hostingEnvironment.WebRootPath;
+        var userId = _schoolAuthService.GetUserId();
+        var fileName = $"avatar-{userId}.jpg";
+        var path = Path.Combine(webRootPath, "avatars", fileName);
+        using (var fileStream = new FileStream(path, FileMode.Create))
+        {
+            avatar.CopyTo(fileStream);
+        }
+        return RedirectToAction(nameof(Profile));
     }
     
 
@@ -99,4 +136,8 @@ public class SchoolUserController : Controller
             })
             .ToList();
     }
+
+    
+
+
 }

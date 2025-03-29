@@ -1,3 +1,4 @@
+using Enums.Lesson;
 using Microsoft.EntityFrameworkCore;
 using StoreData.Models;
 

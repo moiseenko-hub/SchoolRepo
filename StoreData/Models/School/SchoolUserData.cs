@@ -1,3 +1,4 @@
+using Enums.SchoolUser;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StoreData.Repostiroties;
 
@@ -12,4 +13,6 @@ public class SchoolUserData : BaseModel
     public SchoolRoleData? Role { get; set; }
     
     public List<MessageData> Messages { get; set; }
+
+    public Locale Locale { get; set; }
 }

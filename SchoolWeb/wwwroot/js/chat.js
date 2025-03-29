@@ -12,7 +12,8 @@ $(document).ready(function (){
         hub.invoke("AddMessage", newMessageText)
     })
     
-    hub.on("NewMessage", function (username, message){
+    hub.on("NewMessage", function (username, message) {
+        
         $(".messages").append(`
             <div class="message template">
                 <span class="author">${username}</span>

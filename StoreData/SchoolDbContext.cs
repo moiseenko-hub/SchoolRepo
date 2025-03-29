@@ -6,7 +6,7 @@ namespace StoreData;
 
 public class SchoolDbContext : DbContext
 {
-    public const string CONNECTION_STRING = "User ID=postgres;Password=root;Host=localhost;Port=5432;Database=school;";
+    public const string CONNECTION_STRING = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SchoolDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
     public DbSet<LessonData> Lessons { get; set; }
     public DbSet<LessonCommentData> Comments { get; set; }
@@ -19,7 +19,7 @@ public class SchoolDbContext : DbContext
     public SchoolDbContext(DbContextOptions<SchoolDbContext> option) : base(option) { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(CONNECTION_STRING);
+        optionsBuilder.UseSqlServer(CONNECTION_STRING);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

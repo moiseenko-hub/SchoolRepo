@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using StoreData;
 using StoreData.Models;
@@ -8,6 +10,7 @@ using WebStoryFroEveryting.Middlewares;
 using WebStoryFroEveryting.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services
     .AddAuthentication(SchoolAuthService.AUTH_TYPE)
@@ -21,7 +24,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services
     .AddDbContext<SchoolDbContext>(
-        options => options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(SchoolDbContext))));
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(SchoolDbContext))));
 //builder.Services.AddScoped<LessonRepository>();
 
 builder.Services.AddScoped<LessonRepository>();
@@ -51,6 +54,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -65,6 +69,6 @@ app.UseMiddleware<LocalizationMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Lessons}/{action=Index}/{id?}");
 
 app.Run();

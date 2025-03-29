@@ -72,7 +72,7 @@ public class SchoolUserRepository : BaseSchoolRepository<SchoolUserData>
         var hashPassword = HashPassword(password);
         return _dbSet
             .Include(x => x.Role)
-            .First(u => u.Username == username && u.Password == hashPassword);
+            .FirstOrDefault(u => u.Username == username && u.Password == hashPassword);
     }
 
     public List<PotentialBanUsersData> GetPotentialBanUsers()
@@ -103,4 +103,13 @@ public class SchoolUserRepository : BaseSchoolRepository<SchoolUserData>
         var hashBytes = sha256.ComputeHash(inputBytes);
         return Convert.ToHexString(hashBytes);
     }
+
+    public Locale GetLocale(int id)
+    {
+        return _dbSet
+            .First(u => u.Id == id)
+            .Locale;
+    }
+
+   
 }

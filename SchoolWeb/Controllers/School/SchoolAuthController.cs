@@ -20,37 +20,41 @@ public class SchoolAuthController : Controller
             {
                 return View();
             }
-    
-            [HttpPost]
+     [HttpPost]
             public IActionResult Login(SchoolAuthViewModel viewModel)
             {
-                var user = _userRepository.Login(viewModel.Username, viewModel.Password);
-    
-                if (user is null)
-                {
-                    return RedirectToAction("Login");
-                }
-                
-                
-    
-                var claims = new List<Claim>
+               if(!ModelState.IsValid)
+        {
+            var user = _userRepository.Login(viewModel.Username, viewModel.Password);
+
+            if (user is null)
+            {
+                ModelState.AddModelError("NotFound", "User not found");
+                return View(viewModel);
+            }
+
+
+
+            var claims = new List<Claim>
                 {
                     new Claim(SchoolAuthService.CLAIM_KEY_ID, user.Id.ToString()),
                     new Claim(SchoolAuthService.CLAIM_KEY_NAME, user.Username.ToString()),
                     new Claim(SchoolAuthService.CLAIM_KEY_PERMISSION, ((int?)user.Role?.Permission ?? -1).ToString()),
                     new Claim(ClaimTypes.AuthenticationMethod, SchoolAuthService.AUTH_TYPE)
                 };
-    
-                var identity = new ClaimsIdentity(claims, SchoolAuthService.AUTH_TYPE);
-    
-                var principal = new ClaimsPrincipal(identity);
-    
-                HttpContext
-                    .SignInAsync(principal)
-                    .Wait();
-    
-                return RedirectToAction("Index", "Lessons");
-            }
+
+            var identity = new ClaimsIdentity(claims, SchoolAuthService.AUTH_TYPE);
+
+            var principal = new ClaimsPrincipal(identity);
+
+            HttpContext
+                .SignInAsync(principal)
+                .Wait();
+
+           
+        }
+        return RedirectToAction("Index", "Lessons");
+    }
     
             public IActionResult Registration()
             {
